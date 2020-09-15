@@ -22,6 +22,9 @@ let sections;
 
 const SECTIONS_OBSERVER = new MutationObserver(onSectionChange);
 
+// Used for scrollHandler
+let ticking = false
+
 /**
  * End Global Variables
  * Start Helper Functions
@@ -48,6 +51,24 @@ function createNavLink(section) {
   li.appendChild(a);
 
   return li;
+}
+
+
+/*
+ * A helper function that handles the scroll event efficiently,
+ * See: https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event
+ * And: https://www.html5rocks.com/en/tutorials/speed/animations/
+*/
+function scrollHandler(callback) {
+  return function (e) {
+    if (!ticking) {
+      window.requestAnimationFrame(function () {
+        callback(e);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
 }
 
 /**
@@ -77,6 +98,18 @@ function buildNav() {
 
 // Add class 'active' to section when near top of viewport
 
+function setActiveSection() {
+  for (section of sections) {
+    const bounding = section.getBoundingClientRect();
+    const offset = bounding.height / 3;
+    if (bounding.y < offset && bounding.y > (-bounding.height + offset)) {
+      section.classList.add('your-active-class');
+    }
+    else {
+      section.classList.remove('your-active-class');
+    }
+  }
+}
 
 // Scroll to anchor ID using scrollTO event
 
@@ -105,4 +138,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Set sections as active
 
+window.addEventListener('scroll', scrollHandler(setActiveSection))
 
