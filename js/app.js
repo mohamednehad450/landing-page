@@ -113,6 +113,13 @@ function setActiveSection() {
 
 // Scroll to anchor ID using scrollTO event
 
+function scrollToSection(hash) {
+  const section = document.querySelector(hash);
+  if (section) {
+    const { y } = section.getBoundingClientRect();
+    window.scrollTo({ top: y + window.scrollY, behavior: 'smooth' });
+  }
+}
 
 /**
  * End Main Functions
@@ -135,6 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Scroll to section on link click
+
+document.addEventListener('DOMContentLoaded', () => {
+  const navContainer = document.querySelector("#navbar__list");
+  navContainer.addEventListener('click', (e) => {
+    if (e.target.nodeName === "A") {
+      e.preventDefault();
+      scrollToSection(e.target.hash);
+    }
+  });
+});
 
 // Set sections as active
 
