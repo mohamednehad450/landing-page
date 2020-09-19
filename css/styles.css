@@ -99,7 +99,41 @@ section {
 }
 
 .page__header__hide {
-    transform:translateY(-100%);
+    transform: translateY(-100%);
+}
+
+/* Button style */
+.btn {
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+    border: none;
+    font-size: xx-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    transition: ease 0.3s all;
+}
+
+.btn__circular {
+    border-radius: 1em;
+}
+
+.btn__bottom {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.btn__hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.btn:hover {
+    background: #333;
+    color: #fff;
 }
 
 /* Footer Styles */
