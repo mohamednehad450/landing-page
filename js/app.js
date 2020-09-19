@@ -25,7 +25,7 @@ let lastScrollY = 0;
 const SECTIONS_OBSERVER = new MutationObserver(onSectionChange);
 
 // Used for scrollHandler
-let ticking = false
+let ticking = false;
 
 /**
  * End Global Variables
@@ -33,7 +33,7 @@ let ticking = false
  * 
 */
 
-function onSectionChange(){
+function onSectionChange() {
   sections = document.querySelectorAll('section');
   buildNav();
 }
@@ -64,7 +64,7 @@ function closerToTop(e1, e2) {
     return e1;
   }
   else {
-    return e2
+    return e2;
   }
 }
 
@@ -117,14 +117,14 @@ function buildNav() {
 function setActiveSection() {
   if (sections.length) {
 
-    const currentActive = activeSection || sections[0]
+    const currentActive = activeSection || sections[0];
 
-    const newActive = [...sections].reduce(closerToTop, currentActive)
+    const newActive = [...sections].reduce(closerToTop, currentActive);
 
     if (currentActive.id !== newActive.id) {
-      currentActive.classList.remove('your-active-class')
-      newActive.classList.add('your-active-class')
-      activeSection = newActive
+      currentActive.classList.remove('your-active-class');
+      newActive.classList.add('your-active-class');
+      activeSection = newActive;
     }
   }
 }
@@ -173,5 +173,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Set sections as active
 
-window.addEventListener('scroll', scrollHandler(setActiveSection))
+window.addEventListener('scroll', scrollHandler(setActiveSection));
 
