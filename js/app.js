@@ -87,6 +87,17 @@ function scrollHandler(callback) {
   }
 }
 
+// Sets header visibility
+function setHeaderVisibility(state) {
+  const header = document.querySelector('.page__header');
+  if (header) {
+    state ?
+      header.classList.remove('page__header__hide') :
+      header.classList.add('page__header__hide');
+  }
+}
+
+
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -139,6 +150,20 @@ function scrollToSection(hash) {
   }
 }
 
+
+// Change page header visibility
+function headerVisibilityHandler(lastScrollY) {
+  
+  // Scrolling up, showing header
+  if (lastScrollY > window.scrollY) {
+    setHeaderVisibility(true);
+  } 
+  // Scrolling down, hiding header
+  else if (lastScrollY < window.scrollY){
+    setHeaderVisibility(false);
+  }
+}
+
 /**
  * End Main Functions
  * Begin Events
@@ -175,3 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('scroll', scrollHandler(setActiveSection));
 
+
+// Toggle page header
+window.addEventListener('scroll', () => {
+  setTimeout(headerVisibilityHandler, 0, window.scrollY);
+});
