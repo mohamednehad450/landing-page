@@ -19,6 +19,8 @@
 */
 
 let sections;
+let activeSection;
+let lastScrollY = 0;
 
 const SECTIONS_OBSERVER = new MutationObserver(onSectionChange);
 
@@ -54,6 +56,19 @@ function createNavLink(section) {
 }
 
 
+function closerToTop(e1, e2) {
+  const { y: e1Y, } = e1.getBoundingClientRect();
+  const { y: e2Y, } = e2.getBoundingClientRect();
+
+  if (Math.abs(e1Y) - lastScrollY < Math.abs(e2Y) - lastScrollY) {
+    return e1;
+  }
+  else {
+    return e2
+  }
+}
+
+
 /*
  * A helper function that handles the scroll event efficiently,
  * See: https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event
@@ -61,6 +76,7 @@ function createNavLink(section) {
 */
 function scrollHandler(callback) {
   return function (e) {
+    lastScrollY = window.scrollY;
     if (!ticking) {
       window.requestAnimationFrame(function () {
         callback(e);
@@ -99,14 +115,16 @@ function buildNav() {
 // Add class 'active' to section when near top of viewport
 
 function setActiveSection() {
-  for (section of sections) {
-    const bounding = section.getBoundingClientRect();
-    const offset = bounding.height / 3;
-    if (bounding.y < offset && bounding.y > (-bounding.height + offset)) {
-      section.classList.add('your-active-class');
-    }
-    else {
-      section.classList.remove('your-active-class');
+  if (sections.length) {
+
+    const currentActive = activeSection || sections[0]
+
+    const newActive = [...sections].reduce(closerToTop, currentActive)
+
+    if (currentActive.id !== newActive.id) {
+      currentActive.classList.remove('your-active-class')
+      newActive.classList.add('your-active-class')
+      activeSection = newActive
     }
   }
 }
